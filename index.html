@@ -46,35 +46,125 @@
 
     // 👉 CHALLENGE 1 - Integers
     class Integers {
+
       // 🧠 Constructor takes **any** number of arguments, which are integers
+      constructor(...arg) {
+
       // 🧠 Instances have an `ints` property which is an array holding the integers above in the same order
+        this.ints = arg;
+        
+      }
+      
       // 🧠 Implement a `getAll` method which returns the data held in the `ints` property
+      getAll() {
+
+        return this.ints;
+      }
+
       // 🧠 Implement a `getEvens` method which returns an array with the integers that are even
+      getEvens() {
+        // Errow function for short code
+        return this.ints.filter(evenNumber => evenNumber % 2 === 0);
+      }
+
       // 🧠 Implement a `getNegatives` method which returns an array with the integers that negative
+      getNegatives() {
+
+        return this.ints.filter(negativNumber => negativNumber < 0);
+      }
+
       // 🧠 Implement a `getAllSquared` method which returns an array with the integers squared
+      getAllSquared() {
+
+        return this.ints.map(squaredNumber => squaredNumber ** 2);
+      }
+
       // 🧠 Implement a `pop` method which removes the last integer from `ints`  and returns it
+      pop() {
+
+        return this.ints.pop();
+        
+      }
+
       // 🧠 Implement a `push` method which takes an int and pushes it to the end of `ints`, and returns the updated `ints` property
+      push(int) {
+
+        this.ints.push(int);
+        return this.ints;
+      }
+
       // 🧠 Implement a `getEveryNth` method which takes an int `n` and returns an array with the ints at position 0, n, n + n, n + n + n, etc
+      getEveryNth(n) {
+
+        return this.ints.filter((element, position) => position % n === 0);
+      }
+      
       // 🧠 Implement a `getAllReversed` method which returns the ints in reverse order
+      getAllReversed() {
+
+        return [...this.ints].reverse();
+      }
+      
       // ❗ WARNING: except for `getAllReversed`, methods must respect the order of the integers
       // ❗ WARNING: note that none of the methods actually mutate the `ints` property
-
     }
+
 
     // 👉 CHALLENGE 2 NerfGun
     class NerfGun {
+
       // 🧠 Constructor takes one argument: the total number of projectiles supported by the instance
-      // 🧠 New instances initialize fully loaded and with the safety on
+      constructor(projactiles) {
+
+        // loadedProjectiles represents actual capasity
+        this.loadedProjectiles = projactiles;
+        // currentProjectiles represents current ammo after bang!
+        this.currentProjectiles = this.loadedProjectiles;
+        // safety represents on or off
+        this.safety = true;
+      }
+
+      
       // 🧠 Instances have a `shoot` method that takes no arguments:
+      shoot() {
+
       //      * If there is ammo left and safety is off, method consumes one projectile and returns the string "Bang!"
+        if (this.currentProjectiles > 0) {
+          if (this.safety == false) {
+            // Shoot and update variable by -1 ammo
+            this.currentProjectiles--;
+            return "Bang!"
       //      * Shooting on empty or with the safety on, returns the string "Click!"
+          } else {
+            return "Click!"
+          }
+        } else {
+          return "Click!"
+        }
+      }
+      
       // 🧠 Instances have a `reload` method that takes a number and tops up the instance by that number
+      reload(number) {
+        
+        // make sure that number is integer and then check if it's larger then zero
+        if (typeof number === 'number' && number > 0) {
+          this.currentProjectiles = Math.min(Math.max(this.currentProjectiles + number, 1), this.loadedProjectiles);
       //      * Reloading returns a string in the following format: "<number> projectiles left!"
-      //      * Reloading by more than capacity fills the instance to capacity
-      //      * Passing an argument which is not a number larger than zero returns the string "Error reloading!"
+          return `${this.currentProjectiles} projectiles left!`;
+        } else {
+      //      * Passing an argument which is not a number larger than zero returns the string
+          return "Error reloading!";
+        }
+      }
+
       // 🧠 Instances have a `toggleSafety` method that takes no arguments and switches the state of the safety
+      toggleSafety() {
+        
+        this.safety = !this.safety
       //      * When engaging the safety, return "Safety enabled!"
       //      * When disengaging the safety, return "Safety disabled!"
+        return this.safety ? "Safety enabled!" : "Safety disabled!";
+      }
       // 🌟 HINT: instances need to keep track of their maximum capacity as well as their current capacity
 
     }
@@ -82,11 +172,29 @@
     // 👉 CHALLENGE 3 EBook
     class EBook {
       // 🧠 Constructor takes two arguments:
+      constructor(wholeText, charNumber) {
+
       //      * First arg is a string with the whole text of the book
+        this.text = wholeText;
       //      * Second arg is the number of characters contained in a single page of the book
+        this.charNumber = charNumber
+        this.currentPosition = 0;
+
+      }
+
       // 🧠 Instances have a `next` method:
-      //      * It takes no args and returns the next page of the book
+      next() {
+
       //      * If the next page is empty because we have reached the end, return null instead
+        if (this.currentPosition >= this.text.length) {
+          // It reached the end 
+          return null
+        }
+      //      * It takes no args and returns the next page of the book
+        const result = this.text.slice(this.currentPosition, this.currentPosition + this.charNumber);
+        this.currentPosition += this.charNumber;
+        return result;
+      }
       // 🧠 Example of usage:
       //    const ebook = new EBook('abcdefg', 3)
       //    ebook.next() // returns "abc"
@@ -100,19 +208,59 @@
 
     // 👉 CHALLENGE 4 AntFarm
     class AntFarm {
+
       // 🧠 Constructor takes **any** number of arguments, which are strings: the names of your ants
+      constructor(...arg) {
+
       // 🧠 Instances of AntFarm have an `ants` property holding an array of ants:
       //      * Each ant is an object with a `name` prop and a `health` prop that starts at 100
+        this.ants = arg.map(name => ({name, health: 100}));
+      }
+
       // 🧠 Instances of AntFarm have a `work` method:
-      //      * When invoked your ants do chores at a cost of 20 health points each
-      //      * The method takes no arguments and returns the string "<ant number> ants starting work!"
-      //      * If the `health` of any ant decreases to zero or below, it dies and is removed from `ants`
+      work() {
+
+        
+        // If there no ants left
+        if (this.ants.length == 0){
       //      * If `ants` contains no ants, the method returns "No ants here. Did you work them to death?"
+          return "No ants here. Did you work them to death?"
+        }
+        // This variable helps as to know how many ants start the work
+        const numberOfAnts = this.ants.length;
+      //      * When invoked your ants do chores at a cost of 20 health points each
+        this.ants = this.ants.map(ant => ({...ant, health: Math.max(0, ant.health - 20)}))
+        // filter method is good to remove and filter the objects which is not greater then 0
+      //      * If the `health` of any ant decreases to zero or below, it dies and is removed from `ants`
+        this.ants = this.ants.filter(ant => ant.health > 0);
+      //      * The method takes no arguments and returns the string "<ant number> ants starting work!"
+        return `${numberOfAnts} ants starting work!`;
+      }
+
+
       // 🧠 Instances of AntFarm have a `feed` method:
       //      * The method takes as its only argument the name of the particular ant(s) to feed
-      //      * When invoked, the ant(s) by the given name obtain a health increase of 15 points
-      //      * The method returns the string "Yum!" if any ants by the given name exist
+      feed(antName) {
+
+        const compareName = this.ants.find(ant => ant.name === antName);
+
+        if (compareName == undefined) {
       //      * The method returns the string "<ant name> not found!" if no ants by the given name exist
+          return `${antName} not found!`
+        } else {
+
+      //      * When invoked, the ant(s) by the given name obtain a health increase of 15 points
+          // If ant does excist then add 15 health
+          this.ants.forEach(ant => {
+            if (ant.name === compareName.name) {
+              ant.health += 15;
+            }
+          });
+      //      * The method returns the string "Yum!" if any ants by the given name exist
+          return "Yum!"
+        }
+
+      }
       // 🌟 Example:
       //      const farm = new AntFarm('Jess', 'Blake');
       //      farm.ants;         // evaluates to [{name: 'Jess', health: 100}, {name: 'Blake', health: 100}]
